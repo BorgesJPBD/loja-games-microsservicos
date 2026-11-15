@@ -1,0 +1,9 @@
+# Bancos H2 gerados ao rodar
+data/
+
+# Arquivos compilados
+target/
+
+# Configurações pessoais do editor
+.vscode/
+.idea/
