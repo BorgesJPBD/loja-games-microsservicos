@@ -1,5 +1,6 @@
 package br.com.lojagames.produto_service.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,12 @@ public class ProdutoService {
     private final ProdutoRepository repository;
 
     // ===== Usados pelo controller (HTTP) =====
-        public List<Produto> listar(Plataforma plataforma) {
+
+    public List<Produto> listar(Plataforma plataforma) {
         if (plataforma == null) {
-            return repository.findAll();            // sem filtro: todos
+            return repository.findAll();                      // sem filtro: todos
         }
-        return repository.findByPlataforma(plataforma);   // com filtro
-    
-    
+        return repository.findByPlataforma(plataforma);       // com filtro
     }
 
     public Produto buscar(Long id) {
@@ -41,7 +41,6 @@ public class ProdutoService {
                 req.nome(), req.plataforma(), req.genero(), req.preco(), req.estoque()));
     }
 
-    // NOVO: editar um produto
     @Transactional
     public Produto atualizar(Long id, ProdutoRequest req) {
         Produto produto = buscar(id);   // se não existir, já dá 404
@@ -50,10 +49,9 @@ public class ProdutoService {
         produto.setGenero(req.genero());
         produto.setPreco(req.preco());
         produto.setEstoque(req.estoque());
-        return produto;   // não precisa de save(): o @Transactional salva as mudanças sozinho
+        return produto;   // o @Transactional salva as mudanças sozinho
     }
 
-    // NOVO: excluir um produto
     @Transactional
     public void remover(Long id) {
         Produto produto = buscar(id);   // se não existir, já dá 404
@@ -67,14 +65,18 @@ public class ProdutoService {
         Produto produto = repository.findById(evento.produtoId()).orElse(null);
 
         if (produto == null) {
-            return new EstoqueResultadoEvent(evento.pedidoId(), false, "Produto não encontrado");
+            return new EstoqueResultadoEvent(evento.pedidoId(), false, "Produto não encontrado", null);
         }
         if (produto.getEstoque() < evento.quantidade()) {
             return new EstoqueResultadoEvent(evento.pedidoId(), false,
-                    "Estoque insuficiente (disponível: " + produto.getEstoque() + ")");
+                    "Estoque insuficiente (disponível: " + produto.getEstoque() + ")", null);
         }
 
         produto.setEstoque(produto.getEstoque() - evento.quantidade());
-        return new EstoqueResultadoEvent(evento.pedidoId(), true, "Estoque reservado");
+
+        // NOVO: preço x quantidade (BigDecimal não usa *, usa multiply)
+        BigDecimal valorTotal = produto.getPreco().multiply(BigDecimal.valueOf(evento.quantidade()));
+
+        return new EstoqueResultadoEvent(evento.pedidoId(), true, "Estoque reservado", valorTotal);
     }
 }

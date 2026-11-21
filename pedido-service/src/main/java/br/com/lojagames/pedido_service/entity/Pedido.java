@@ -1,5 +1,7 @@
 package br.com.lojagames.pedido_service.entity;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,6 +37,10 @@ public class Pedido {
 
     // Preenchido quando o pedido é recusado (ex.: estoque insuficiente)
     private String motivo;
+
+    // NOVO: preenchido quando o pedido é confirmado (calculado pelo produto-service: preço x quantidade)
+    @Column(precision = 10, scale = 2)
+    private BigDecimal valorTotal;
 
     public Pedido(Long produtoId, Integer quantidade) {
         this.produtoId = produtoId;

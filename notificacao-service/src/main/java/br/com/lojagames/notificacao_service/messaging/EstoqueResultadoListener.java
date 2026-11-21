@@ -1,5 +1,7 @@
 package br.com.lojagames.notificacao_service.messaging;
 
+import java.util.Locale;
+
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +22,14 @@ public class EstoqueResultadoListener {
     public void aoReceberResultado(EstoqueResultadoEvent evento) {
         log.info("Resultado recebido para notificar: {}", evento);
 
-        String mensagem = evento.sucesso()
-                ? "Pedido #" + evento.pedidoId() + " confirmado! Obrigado pela compra."
-                : "Pedido #" + evento.pedidoId() + " recusado: " + evento.motivo();
+        String mensagem;
+        if (evento.sucesso()) {
+            // NOVO: valor em formato brasileiro, ex.: R$ 499,80
+            String total = String.format(Locale.of("pt", "BR"), "R$ %.2f", evento.valorTotal());
+            mensagem = "Pedido #" + evento.pedidoId() + " confirmado! Total: " + total + ". Obrigado pela compra.";
+        } else {
+            mensagem = "Pedido #" + evento.pedidoId() + " recusado: " + evento.motivo();
+        }
 
         repository.save(new Notificacao(evento.pedidoId(), mensagem));
     }

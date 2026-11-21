@@ -25,6 +25,7 @@ public class EstoqueResultadoListener {
         repository.findById(evento.pedidoId()).ifPresent(pedido -> {
             if (evento.sucesso()) {
                 pedido.setStatus(StatusPedido.CONFIRMADO);
+                pedido.setValorTotal(evento.valorTotal());   // NOVO: guarda o valor calculado pelo produto
             } else {
                 pedido.setStatus(StatusPedido.RECUSADO);
                 pedido.setMotivo(evento.motivo());
