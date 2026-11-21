@@ -16,8 +16,8 @@ public class RabbitConfig {
     public static final String EXCHANGE = "loja.eventos";
 
     // Routing keys dos eventos
-    public static final String RK_PEDIDO_CRIADO = "pedido.criado";
-    public static final String RK_ESTOQUE_RESULTADO = "estoque.resultado";
+    public static final String RK_PEDIDO_CRIADO = "pedido.criado"; //o que ele recebe do pedido-service
+    public static final String RK_ESTOQUE_RESULTADO = "estoque.resultado"; // o que ele envia (vai para o pedido-service e o notificacao-service)
 
     // Fila que ESTE serviço consome
     public static final String FILA_PEDIDO_CRIADO = "produto.pedido-criado";

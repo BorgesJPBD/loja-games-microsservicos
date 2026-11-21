@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import br.com.lojagames.produto_service.dto.ProdutoRequest;
 import br.com.lojagames.produto_service.entity.Produto;
-import br.com.lojagames.produto_service.repository.ProdutoRepository;
+import br.com.lojagames.produto_service.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,23 +22,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProdutoController {
 
-    private final ProdutoRepository repository;
+    private final ProdutoService service;   // antes era o ProdutoRepository
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Produto criar(@Valid @RequestBody ProdutoRequest req) {
-        return repository.save(new Produto(
-                req.nome(), req.plataforma(), req.genero(), req.preco(), req.estoque()));
+        return service.criar(req);
     }
 
     @GetMapping
     public List<Produto> listar() {
-        return repository.findAll();
+        return service.listar();
     }
 
     @GetMapping("/{id}")
     public Produto buscar(@PathVariable Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado"));
+        return service.buscar(id);
     }
 }
