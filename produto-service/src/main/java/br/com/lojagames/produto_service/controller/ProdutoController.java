@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.lojagames.produto_service.dto.ProdutoRequest;
+import br.com.lojagames.produto_service.entity.Plataforma;
 import br.com.lojagames.produto_service.entity.Produto;
 import br.com.lojagames.produto_service.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -32,9 +34,9 @@ public class ProdutoController {
         return service.criar(req);
     }
 
-    @GetMapping
-    public List<Produto> listar() {
-        return service.listar();
+        @GetMapping   // GET /produtos  ou  GET /produtos?plataforma=PC
+    public List<Produto> listar(@RequestParam(required = false) Plataforma plataforma) {
+        return service.listar(plataforma);
     }
 
     @GetMapping("/{id}")

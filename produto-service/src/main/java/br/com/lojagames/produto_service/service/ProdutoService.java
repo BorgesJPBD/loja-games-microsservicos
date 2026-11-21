@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.lojagames.produto_service.dto.ProdutoRequest;
+import br.com.lojagames.produto_service.entity.Plataforma;
 import br.com.lojagames.produto_service.entity.Produto;
 import br.com.lojagames.produto_service.messaging.EstoqueResultadoEvent;
 import br.com.lojagames.produto_service.messaging.PedidoCriadoEvent;
@@ -21,9 +22,13 @@ public class ProdutoService {
     private final ProdutoRepository repository;
 
     // ===== Usados pelo controller (HTTP) =====
-
-    public List<Produto> listar() {
-        return repository.findAll();
+        public List<Produto> listar(Plataforma plataforma) {
+        if (plataforma == null) {
+            return repository.findAll();            // sem filtro: todos
+        }
+        return repository.findByPlataforma(plataforma);   // com filtro
+    
+    
     }
 
     public Produto buscar(Long id) {
