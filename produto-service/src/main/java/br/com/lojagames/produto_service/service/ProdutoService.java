@@ -20,6 +20,7 @@ public class ProdutoService {
 
     private final ProdutoRepository repository;
 
+    // ===== Usados pelo controller (HTTP) =====
 
     public List<Produto> listar() {
         return repository.findAll();
@@ -35,6 +36,26 @@ public class ProdutoService {
                 req.nome(), req.plataforma(), req.genero(), req.preco(), req.estoque()));
     }
 
+    // NOVO: editar um produto
+    @Transactional
+    public Produto atualizar(Long id, ProdutoRequest req) {
+        Produto produto = buscar(id);   // se não existir, já dá 404
+        produto.setNome(req.nome());
+        produto.setPlataforma(req.plataforma());
+        produto.setGenero(req.genero());
+        produto.setPreco(req.preco());
+        produto.setEstoque(req.estoque());
+        return produto;   // não precisa de save(): o @Transactional salva as mudanças sozinho
+    }
+
+    // NOVO: excluir um produto
+    @Transactional
+    public void remover(Long id) {
+        Produto produto = buscar(id);   // se não existir, já dá 404
+        repository.delete(produto);
+    }
+
+    // ===== Usado pelo listener (RabbitMQ) =====
 
     @Transactional
     public EstoqueResultadoEvent reservarEstoque(PedidoCriadoEvent evento) {

@@ -3,9 +3,11 @@ package br.com.lojagames.produto_service.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,4 +41,26 @@ public class ProdutoController {
     public Produto buscar(@PathVariable Long id) {
         return service.buscar(id);
     }
+
+        @PutMapping("/{id}")
+    public Produto atualizar(@PathVariable Long id, @Valid @RequestBody ProdutoRequest req) {
+        return service.atualizar(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)   // 204: deu certo, sem nada para devolver
+    public void remover(@PathVariable Long id) {
+        service.remover(id);
+
+
+    }
+
+
+
+
+
+
+
+
+
 }
