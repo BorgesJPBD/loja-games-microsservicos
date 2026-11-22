@@ -32,6 +32,10 @@ public class Notificacao {
     @Column(nullable = false)
     private LocalDateTime criadaEm = LocalDateTime.now();
 
+    // NOVO: o cliente já leu este aviso? Toda notificação nasce como não lida.
+    @Column(nullable = false)
+    private boolean lida = false;
+
     public Notificacao(Long pedidoId, String mensagem) {
         this.pedidoId = pedidoId;
         this.mensagem = mensagem;

@@ -9,4 +9,7 @@ import br.com.lojagames.notificacao_service.entity.Notificacao;
 public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> {
 
     List<Notificacao> findByPedidoId(Long pedidoId);
+
+    // NOVO: SELECT * FROM notificacoes WHERE lida = ?
+    List<Notificacao> findByLida(boolean lida);
 }
