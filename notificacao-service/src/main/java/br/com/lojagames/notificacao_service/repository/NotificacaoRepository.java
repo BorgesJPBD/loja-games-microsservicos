@@ -10,6 +10,6 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> 
 
     List<Notificacao> findByPedidoId(Long pedidoId);
 
-    // NOVO: SELECT * FROM notificacoes WHERE lida = ?
+    // : SELECT * FROM notificacoes WHERE lida = ?
     List<Notificacao> findByLida(boolean lida);
 }

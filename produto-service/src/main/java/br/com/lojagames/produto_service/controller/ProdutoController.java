@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProdutoController {
 
-    private final ProdutoService service;   // antes era o ProdutoRepository
+    private final ProdutoService service;  
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

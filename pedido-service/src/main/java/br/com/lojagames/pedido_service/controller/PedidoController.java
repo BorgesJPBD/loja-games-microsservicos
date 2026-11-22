@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PedidoController {
 
-    private final PedidoService service;   // antes também usava o PedidoRepository direto
+    private final PedidoService service;   
 
     @PostMapping
     @ResponseStatus(HttpStatus.ACCEPTED)   // 202: aceito, será processado de forma assíncrona

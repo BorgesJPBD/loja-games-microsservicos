@@ -49,7 +49,7 @@ public class PedidoService {
                     RabbitConfig.RK_PEDIDO_CRIADO,
                     new PedidoCriadoEvent(pedido.getId(), pedido.getProdutoId(), pedido.getQuantidade()));
         } catch (AmqpException e) {
-            // NOVO: RabbitMQ fora do ar. O pedido não pode ficar PENDENTE para sempre.
+            // : RabbitMQ fora do ar. O pedido não pode ficar PENDENTE para sempre.
             log.error("Não foi possível publicar o pedido {}: {}", pedido.getId(), e.getMessage());
             pedido.setStatus(StatusPedido.RECUSADO);
             pedido.setMotivo("Serviço de mensagens indisponível. Tente novamente.");
@@ -71,7 +71,7 @@ public class PedidoService {
             log.warn("Pedido {} não existe; resultado ignorado", evento.pedidoId());
             return;
         }
-        // NOVO: só um pedido PENDENTE pode mudar. Se a mesma resposta chegar de novo, é ignorada.
+        // : só um pedido PENDENTE pode mudar. Se a mesma resposta chegar de novo, é ignorada.
         if (pedido.getStatus() != StatusPedido.PENDENTE) {
             log.warn("Pedido {} já está {}; resultado repetido ignorado", pedido.getId(), pedido.getStatus());
             return;

@@ -38,7 +38,7 @@ public class Pedido {
     // Preenchido quando o pedido é recusado (ex.: estoque insuficiente)
     private String motivo;
 
-    // NOVO: preenchido quando o pedido é confirmado (calculado pelo produto-service: preço x quantidade)
+    // : preenchido quando o pedido é confirmado (calculado pelo produto-service: preço x quantidade)
     @Column(precision = 10, scale = 2)
     private BigDecimal valorTotal;
 

@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificacaoController {
 
-    private final NotificacaoService service;   // antes era o NotificacaoRepository
+    private final NotificacaoService service;   
 
     @GetMapping   // /notificacoes, ?pedidoId=1 ou ?lida=false
     public List<Notificacao> listar(@RequestParam(required = false) Long pedidoId,
@@ -26,7 +26,7 @@ public class NotificacaoController {
         return service.listar(pedidoId, lida);
     }
 
-    @PatchMapping("/{id}/lida")   // NOVO: marca uma notificação como lida
+    @PatchMapping("/{id}/lida")   // : marca uma notificação como lida
     public Notificacao marcarComoLida(@PathVariable Long id) {
         return service.marcarComoLida(id);
     }

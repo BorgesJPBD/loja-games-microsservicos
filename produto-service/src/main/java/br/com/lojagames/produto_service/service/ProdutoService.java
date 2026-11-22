@@ -74,7 +74,7 @@ public class ProdutoService {
 
         produto.setEstoque(produto.getEstoque() - evento.quantidade());
 
-        // NOVO: preço x quantidade (BigDecimal não usa *, usa multiply)
+        // : preço x quantidade (BigDecimal não usa *, usa multiply)
         BigDecimal valorTotal = produto.getPreco().multiply(BigDecimal.valueOf(evento.quantidade()));
 
         return new EstoqueResultadoEvent(evento.pedidoId(), true, "Estoque reservado", valorTotal);
